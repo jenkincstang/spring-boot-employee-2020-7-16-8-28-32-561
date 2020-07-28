@@ -14,4 +14,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees;
     }
 
+    @Override
+    public Employee findEmployeeById(int employeeId) {
+        for ( Employee employee: employees) {
+            if (employee.getId() == employeeId)
+                return employee;
+        }
+        return null;
+    }
+
+
 }
