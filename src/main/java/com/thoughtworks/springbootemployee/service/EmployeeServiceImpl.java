@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -42,5 +43,14 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void deleteEmployeeById(int employeeId){
+        Iterator<Employee> employeeIterator = employees.iterator();
+        while(employeeIterator.hasNext()){
+            Employee nextEmployee = employeeIterator.next();
+            if(nextEmployee.getId() == employeeId)employeeIterator.remove();
+        }
     }
 }
