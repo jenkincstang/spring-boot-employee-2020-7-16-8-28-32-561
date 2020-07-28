@@ -13,32 +13,33 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/employees")
-    public List<Employee> findAllEmployees() {
-        return employeeService.findAllEmployees();
-    }
-
     @GetMapping("/employees/{employeeId}")
     public Employee findEmployeeById(@PathVariable int employeeId) {
         return employeeService.findEmployeeById(employeeId);
     }
 
-
     @GetMapping("/employees")
-    public List<Employee> findEmployeesByPage(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
+    public List<Employee> findEmployeesByCondition(@RequestParam(required = false, defaultValue = "-1") int page,
+                                              @RequestParam(required = false, defaultValue = "-1") int pageSize,
+                                              @RequestParam(required = false, defaultValue = "-1") String gender) {
+        if (page != -1) return getPagesEmployees(page, pageSize);
+        if (!"-1".equals(gender)) return getEmployeesWithGender(gender);
+        return employeeService.findAllEmployees();
+    }
+
+    private List<Employee> getPagesEmployees(int page, int pageSize) {
         List<Employee> employees = employeeService.findAllEmployees();
         List<Employee> pagedEmployees = new ArrayList<>();
 
         int startRow = (page - 1) * pageSize;
-        int endRow = startRow + pageSize - 1;
+        int endRow = startRow + pageSize;
         for (int index = startRow; index < employees.size() && index < endRow; index++) {
             pagedEmployees.add(employees.get(index));
         }
         return pagedEmployees;
     }
 
-    @GetMapping("/employees")
-    public List<Employee> findEmployeesByGender(@RequestParam("gender") String gender) {
+    private List<Employee> getEmployeesWithGender(String gender) {
         List<Employee> employees = employeeService.findAllEmployees();
         List<Employee> employeesWithGender = new ArrayList<>();
 
@@ -50,7 +51,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public void addEmployee(@RequestBody Employee employee){
+    public void addEmployee(@RequestBody Employee employee) {
         employeeService.addEmployee(employee);
+    }
+
+    @PutMapping("/employees/{employeeId}")
+    public Employee updateEmployee(@PathVariable int employeeId, @RequestBody Employee employee) {
+        return employeeService.updateEmployee(employeeId, employee);
     }
 }

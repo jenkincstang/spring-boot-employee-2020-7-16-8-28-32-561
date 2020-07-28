@@ -29,4 +29,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void addEmployee(Employee employee) {
         employees.add(employee);
     }
+
+    @Override
+    public Employee updateEmployee(int employeeId, Employee employee) {
+        for(Employee emp:employees){
+            if (emp.getId() == employeeId){
+                emp.setAge(employee.getAge());
+                emp.setGender(employee.getGender());
+                emp.setId(employee.getId());
+                emp.setName(employee.getName());
+                return emp;
+            }
+        }
+        return null;
+    }
 }
