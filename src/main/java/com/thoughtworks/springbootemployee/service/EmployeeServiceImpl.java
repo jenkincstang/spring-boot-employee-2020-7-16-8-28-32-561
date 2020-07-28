@@ -2,6 +2,9 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Employee;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return null;
     }
-
-
+    @Override
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
 }
